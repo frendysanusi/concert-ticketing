@@ -9,3 +9,6 @@ A concert ticketing platform built with Go, PostgreSQL, RabbitMQ, and React. The
 - [Backend TODO](docs/BACKEND_TODO.md): planned PRs and commits, dependency gates, and backend release validation.
 
 Status: backend bootstrap started. See the [backend README](backend/README.md) for build and run commands. The process entry points currently print their role and exit; application behavior and production guarantees remain planned.
+
+With Docker running, start local PostgreSQL, RabbitMQ, Mailpit, and the Keycloak
+identity fixture with `make dev-up`. Run `make help` for development commands.

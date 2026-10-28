@@ -1,0 +1,38 @@
+{
+  "realm": "concert-ticketing",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "clients": [
+    {
+      "clientId": "concert-ticketing",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": ["http://localhost:8080/api/v1/auth/callback"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "customer",
+      "enabled": true,
+      "email": "customer@example.test",
+      "emailVerified": true,
+      "firstName": "Local",
+      "lastName": "Customer",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "local-customer",
+          "temporary": false
+        }
+      ]
+    }
+  ]
+}

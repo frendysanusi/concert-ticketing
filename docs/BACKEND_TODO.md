@@ -1,6 +1,6 @@
 # Backend TODO by planned PR and commit
 
-Status: PR-01 commit 1 implemented; remaining work not started
+Status: PR-01 commits 1–2 implemented; remaining work not started
 
 Baseline: [PRD](PRD.md) and [technical plan](TECHNICAL_PLAN.md)
 
@@ -70,8 +70,8 @@ build: bootstrap Go process roles
 build: add local development tools
 ```
 
-- [ ] B00.3: Add reproducible commands for build, run, formatting, checks, migrations, SQL generation, and tests. Document required tools and pin their versions.
-- [ ] B00.4: Add a core Docker Compose profile with PostgreSQL, RabbitMQ, local mail catcher, and the selected local identity setup; provide a secret-free environment example.
+- [x] B00.3: Add reproducible commands for build, run, formatting, checks, migrations, SQL generation, and tests. Document required tools and pin their versions.
+- [x] B00.4: Add a core Docker Compose profile with PostgreSQL, RabbitMQ, local mail catcher, and the selected local identity setup; provide a secret-free environment example.
 
 ### Commit 3
 
