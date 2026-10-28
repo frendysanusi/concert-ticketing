@@ -1,6 +1,7 @@
 # Backend TODO by planned PR and commit
 
-Status: not started  
+Status: PR-01 commit 1 implemented; remaining work not started
+
 Baseline: [PRD](PRD.md) and [technical plan](TECHNICAL_PLAN.md)
 
 ## Workflow
@@ -60,8 +61,8 @@ Technical-plan milestone: 0
 build: bootstrap Go process roles
 ```
 
-- [ ] B00.1: Initialize `backend/go.mod`, pin a supported Go toolchain, and create executable entry points for API, worker, maintenance, and payment simulator.
-- [ ] B00.2: Establish module boundaries for catalog, booking, payment, ticketing, notification, and operations; add shared infrastructure packages only as needed.
+- [x] B00.1: Initialize `backend/go.mod`, pin a supported Go toolchain, and create executable entry points for API, worker, maintenance, and payment simulator.
+- [x] B00.2: Establish module boundaries for catalog, booking, payment, ticketing, notification, and operations; add shared infrastructure packages only as needed.
 
 ### Commit 2
 

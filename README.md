@@ -8,4 +8,4 @@ A concert ticketing platform built with Go, PostgreSQL, RabbitMQ, and React. The
 - [Technical plan](docs/TECHNICAL_PLAN.md): architecture, stack, persistence, messaging, security, deployment, and implementation milestones.
 - [Backend TODO](docs/BACKEND_TODO.md): planned PRs and commits, dependency gates, and backend release validation.
 
-Status: planning. These documents describe the intended system; no application or production guarantees have been implemented or verified yet.
+Status: backend bootstrap started. See the [backend README](backend/README.md) for build and run commands. The process entry points currently print their role and exit; application behavior and production guarantees remain planned.
