@@ -1,0 +1,59 @@
+name: Backend
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: backend/go.mod
+          cache-dependency-path: backend/go.*
+
+      - name: Validate workflow, formatting, and static analysis
+        run: make workflow-check check
+
+      - name: Build process roles
+        run: make build
+
+      - name: Check generated code drift
+        run: make generate-check
+
+      - name: Check known Go vulnerabilities
+        run: make vuln-check
+
+      - name: Start integration dependencies
+        run: make dev-up
+
+      - name: Check dependency connectivity
+        run: make dev-smoke
+
+      - name: Run tests with the race detector
+        run: make test-race
+
+      - name: Collect dependency logs on failure
+        if: failure()
+        run: make dev-logs
+
+      - name: Stop integration dependencies
+        if: always()
+        run: make dev-down

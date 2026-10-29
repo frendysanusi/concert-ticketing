@@ -46,14 +46,16 @@ Engine 29.7.2 and Compose 5.4.0; Compose must support `up --wait`.
 | Go | 1.27.3 | `backend/go.mod`; Make exports the exact `GOTOOLCHAIN` |
 | Goose | v3.29.0 | Root `Makefile` |
 | sqlc | v1.31.1 | Root `Makefile` |
+| govulncheck | v1.9.0 | Root `Makefile` |
+| actionlint | v1.7.12 | Root `Makefile` |
 | PostgreSQL | 18.6-alpine | `deploy/compose/compose.yaml` |
 | RabbitMQ | 4.4.0-management-alpine | `deploy/compose/compose.yaml` |
 | Mailpit | v1.32.0 | `deploy/compose/compose.yaml` |
 | Keycloak | 26.8.1 | `deploy/compose/compose.yaml` |
 
-`make tools` installs versioned Goose and sqlc binaries under the ignored
-`.tools/bin/` directory. Goose is built with only its PostgreSQL driver. Go's
-module proxy and checksum database verify tool dependencies without adding them
+`make tools` installs versioned Goose, sqlc, govulncheck, and actionlint binaries
+under the ignored `.tools/bin/` directory. Goose is built with only its PostgreSQL
+driver. Go's module proxy and checksum database verify tool dependencies without adding them
 to the application module. The first run needs network access. Set `GO=/path/to/go`
 when Go is installed outside `PATH`.
 
@@ -111,11 +113,13 @@ select the deployed identity provider or satisfy PR-03's staff MFA gate.
 Basic dependency checks after startup:
 
 ```sh
-docker compose --env-file .env -f deploy/compose/compose.yaml --profile core exec -T postgres sh -ec 'PGPASSWORD="$POSTGRES_PASSWORD" psql -h 127.0.0.1 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT 1"'
-docker compose --env-file .env -f deploy/compose/compose.yaml --profile core exec -T rabbitmq rabbitmq-diagnostics -q check_port_connectivity
-curl --fail http://localhost:8025/readyz
-curl --fail http://localhost:8081/realms/concert-ticketing/.well-known/openid-configuration
+make dev-smoke
 ```
+
+This checks an authenticated PostgreSQL query, RabbitMQ listener connectivity,
+Mailpit readiness, and Keycloak discovery. It reads host endpoints from `.env`
+and requires `curl` in addition to Docker. Start dependencies with `make dev-up`
+before running it.
 
 ## Migrations and typed SQL
 
@@ -138,3 +142,38 @@ Override `MIGRATIONS_DIR` or `SQLC_CONFIG` for isolated tool smoke checks.
 There are no application migrations or sqlc configuration yet. Until PR-02 adds
 them, `make migrate`, `make migrate-status`, and `make generate` fail with an explicit
 message. No placeholder schema or generated application code is needed for bootstrap.
+
+## CI
+
+`.github/workflows/backend.yml` runs on pull requests, pushes to `main`, and manual
+dispatch. It runs for every change, including contracts and deployment files.
+Actions are pinned to commit SHAs, with read-only repository permissions.
+
+The workflow validates its own syntax with actionlint, checks formatting and vet,
+builds all process roles, checks generated output, and scans known Go
+vulnerabilities with govulncheck. It then starts the core Compose profile, checks
+dependency connectivity, and runs every package's tests with the race detector.
+There are no application tests yet; PostgreSQL/RabbitMQ integration fixtures start
+in PR-02. Failed runs collect dependency logs, and cleanup runs on success or failure.
+
+Run the same checks locally:
+
+```sh
+make workflow-check build check vuln-check
+make generate-check
+make dev-up dev-smoke test-race
+make dev-down
+```
+
+`make generate-check` requires a clean backend working tree. It runs Go generators
+and sqlc when `backend/sqlc.yaml` exists, then rejects tracked changes and untracked
+backend files. Until PR-02 adds sqlc configuration, it reports that SQL generation
+is skipped; Go generation and drift detection still run. `make vuln-check` uses the
+current Go vulnerability database and needs network access. Race checks require a
+C compiler and cgo support, as provided by the Ubuntu 24.04 CI runner.
+
+Local verification on 2026-10-29 (macOS arm64) passed the workflow command sequence
+from an isolated checkout. Additional checks rejected tracked/untracked generated
+drift and a missing OIDC realm, and exercised sqlc when a fixture configuration was
+present. No known reachable Go vulnerabilities were reported. The GitHub-hosted
+workflow has not run yet; the PR-01 acceptance gate remains pending that run.

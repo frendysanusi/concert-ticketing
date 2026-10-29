@@ -1,6 +1,6 @@
 # Backend TODO by planned PR and commit
 
-Status: PR-01 commits 1–2 implemented; remaining work not started
+Status: PR-01 implementation complete and locally validated; hosted CI run pending
 
 Baseline: [PRD](PRD.md) and [technical plan](TECHNICAL_PLAN.md)
 
@@ -79,7 +79,7 @@ build: add local development tools
 ci: add backend checks
 ```
 
-- [ ] B00.7: Add Go CI checks, integration-test dependency startup, vulnerability checks, and generated-code drift checks. Run the race detector for concurrency-sensitive packages as they are introduced.
+- [x] B00.7: Add Go CI checks, integration-test dependency startup, vulnerability checks, and generated-code drift checks. Run the race detector for concurrency-sensitive packages as they are introduced.
 
 Acceptance gate: A clean checkout builds the process roles, starts core dependencies, and runs CI smoke checks. Add richer checks as features land.
 
