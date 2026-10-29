@@ -1,6 +1,7 @@
 # Backend TODO by planned PR and commit
 
-Status: not started  
+Status: PR-01 implementation complete and locally validated; hosted CI run pending
+
 Baseline: [PRD](PRD.md) and [technical plan](TECHNICAL_PLAN.md)
 
 ## Workflow
@@ -60,8 +61,8 @@ Technical-plan milestone: 0
 build: bootstrap Go process roles
 ```
 
-- [ ] B00.1: Initialize `backend/go.mod`, pin a supported Go toolchain, and create executable entry points for API, worker, maintenance, and payment simulator.
-- [ ] B00.2: Establish module boundaries for catalog, booking, payment, ticketing, notification, and operations; add shared infrastructure packages only as needed.
+- [x] B00.1: Initialize `backend/go.mod`, pin a supported Go toolchain, and create executable entry points for API, worker, maintenance, and payment simulator.
+- [x] B00.2: Establish module boundaries for catalog, booking, payment, ticketing, notification, and operations; add shared infrastructure packages only as needed.
 
 ### Commit 2
 
@@ -69,8 +70,8 @@ build: bootstrap Go process roles
 build: add local development tools
 ```
 
-- [ ] B00.3: Add reproducible commands for build, run, formatting, checks, migrations, SQL generation, and tests. Document required tools and pin their versions.
-- [ ] B00.4: Add a core Docker Compose profile with PostgreSQL, RabbitMQ, local mail catcher, and the selected local identity setup; provide a secret-free environment example.
+- [x] B00.3: Add reproducible commands for build, run, formatting, checks, migrations, SQL generation, and tests. Document required tools and pin their versions.
+- [x] B00.4: Add a core Docker Compose profile with PostgreSQL, RabbitMQ, local mail catcher, and the selected local identity setup; provide a secret-free environment example.
 
 ### Commit 3
 
@@ -78,7 +79,7 @@ build: add local development tools
 ci: add backend checks
 ```
 
-- [ ] B00.7: Add Go CI checks, integration-test dependency startup, vulnerability checks, and generated-code drift checks. Run the race detector for concurrency-sensitive packages as they are introduced.
+- [x] B00.7: Add Go CI checks, integration-test dependency startup, vulnerability checks, and generated-code drift checks. Run the race detector for concurrency-sensitive packages as they are introduced.
 
 Acceptance gate: A clean checkout builds the process roles, starts core dependencies, and runs CI smoke checks. Add richer checks as features land.
 
