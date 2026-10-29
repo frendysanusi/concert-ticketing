@@ -12,3 +12,6 @@ Status: backend bootstrap started. See the [backend README](backend/README.md) f
 
 With Docker running, start local PostgreSQL, RabbitMQ, Mailpit, and the Keycloak
 identity fixture with `make dev-up`. Run `make help` for development commands.
+
+Optional [AI PR reviews](docs/PR_REVIEW.md) use OpenRouter with the model configured
+in GitHub secrets.

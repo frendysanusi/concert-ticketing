@@ -54,7 +54,7 @@ vuln-check: $(GOVULNCHECK)
 	cd backend && PATH="$$($(GO) env GOROOT)/bin:$$PATH" "$(GOVULNCHECK)" ./...
 
 workflow-check: $(ACTIONLINT)
-	"$(ACTIONLINT)" .github/workflows/backend.yml
+	"$(ACTIONLINT)" .github/workflows/*.yml
 
 generate-check:
 	cd backend && $(GO) generate ./...
